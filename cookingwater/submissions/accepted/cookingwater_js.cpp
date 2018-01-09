@@ -21,52 +21,18 @@ template<class S> static inline void in(S& s) { cin >> s; }
 template<class S> static inline void ut(const S& s) { cout << s << " "; }
 static inline void nl() { cout << endl; }
 
-
-template <class T>
-auto addInterval(set<pair<T, T>>& is, T L, T R) {
-	if (L == R) return is.end();
-	auto it = is.lower_bound({L, R}), before = it;
-	while (it != is.end() && it->first <= R) {
-		R = max(R, it->second);
-		before = it = is.erase(it);
-	}
-	if (it != is.begin() && (--it)->second >= L) {
-		L = min(L, it->first);
-		R = max(R, it->second);
-		is.erase(it);
-	}
-	return is.insert(before, {L,R});
-};
-
-template <class T>
-void removeInterval(set<pair<T, T>>& is, T L, T R) {
-	if (L == R) return;
-	auto it = addInterval(is, L, R);
-	T r2 = it->second;
-	if (it->first == L) is.erase(it);
-	else (T&)it->second = L;
-	if (R != r2) is.emplace(R, r2);
-}
-
-
 signed main() {
 	cin.sync_with_stdio(0);
 	cin.exceptions(cin.failbit);
-	
-	set<pii> couldCook;
-	couldCook.emplace(0, 1000);
 	int N = ri();
+    int lo = 0;
+    int hi = 1000;
 	rep(i,0,N) {
-		int L = ri();
-		int last = 0;
-		rep(k,0,L) {
-			int a, b;
-			cin >> a >> b;
-			removeInterval(couldCook, last, a);
-			last = b + 1;
-		}
-		removeInterval(couldCook, last, 1000);
+        int a, b;
+        cin >> a >> b;
+        lo = max(a, lo);
+        hi = min(b, hi);
 	}
-	if (couldCook.empty()) cout << "edward is right" << endl;
-	else cout << "gunilla has a point" << endl;
+    if (lo <= hi) cout << "gunilla has a point" << endl;
+    else cout << "edward is right" << endl;
 }
