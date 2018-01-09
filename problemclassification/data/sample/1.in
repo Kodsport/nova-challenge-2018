@@ -3,8 +3,8 @@ graph 3 query vertex hamiltonian
 geometry 3 euclid range vertex
 math 3 euclid hamiltonian sum
 datastructure 3 query range sum
-consider the hamiltonian graph where each vertex corresponds to an
-linear equation we can solve these using the euclid algorithm
-now you will recieve a query corresponding to a range of
-vertices your task is to compute the sum of the minimum solution
-of those vertices
+consider the hamiltonian graph where each vertex corresponds
+to an linear equation we can solve these using the euclid
+algorithm now you will recieve a query corresponding to a
+range of vertices your task is to compute the sum of the
+minimum solution of those vertices
