@@ -1,0 +1,24 @@
+\problemname{Counting Greedily Increasing Supersequences}
+Given a permutation $A = (a_1, a_2, \dots, a_N)$ of the integers $1, 2, \dots, N$, we define the \emph{greedily increasing subsequence} (GIS) in the following way.
+
+Let $g_1 = a_1$. For every $i > 1$, let $g_i$ be the leftmost integer in $A$ that is strictly larger than $g_{i-1}$.
+If there for a given $i$ is no such integer, we say that the GIS of the sequence is the sequence $(g_1, g_2, ..., g_{i - 1})$.
+
+For example, consider the permutation $2, 3, 1, 5, 4, 7, 6$.
+First, we have $g_1 = 2$.
+The leftmost integer larger than $2$ is $3$, so $g_2 = 3$.
+The leftmost integer larger than $3$ is $5$ ($1$ is too small), so $g_3 = 5$.
+Finally, $g_4 = 7$.
+Thus, the GIS of $2, 3, 1, 5, 4, 7, 6$ is $2, 3, 5, 7$.
+
+Given a sequence $G = (g_1, g_2, \dots, g_l)$, how many permutations $A$ of the integers $1, 2, \dots, N$ have $G$ as its GIS?
+
+\section*{Input}
+The first line of input contains the integers $1 \le N \le 10^6$, the number of elements of the permutation $A$,
+and $1 \le l \le 10^6$, the length of the sequence $G$.
+
+The next line contains $l$ positive integers between $1$ and $N$, the elements $g_1, \dots, g_l$ of the sequence $G$.
+
+\section*{Output}
+Output a single integer: the number of $N$-element permutations having the given sequences as its GIS.
+Since this number may be large, output it modulo the prime number $10^9 + 7$.
