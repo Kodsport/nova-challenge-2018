@@ -4,3 +4,4 @@ a.out
 *.log
 *.aux
 *.toc
+*.pyc
