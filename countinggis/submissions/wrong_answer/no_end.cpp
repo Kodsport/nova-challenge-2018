@@ -29,7 +29,7 @@ signed main() {
 	int N = ri(), l = ri();
 	vi G = rvi(l);
 
-	if (!is_sorted(all(G)) || G.back() != N) {
+	if (!is_sorted(all(G))) {
 		ut(0); nl();
 		return 0;
 	}

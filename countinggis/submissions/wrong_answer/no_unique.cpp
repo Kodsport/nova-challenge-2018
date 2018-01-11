@@ -41,7 +41,6 @@ signed main() {
 	for (int i = l; i >= 1; --i) {
 		++spots;
 		int hole = G[i] - G[i - 1] - 1;
-        if (hole < 0) ans = 0;
 		rep(i,0,hole) {
 			ans *= (spots++);
 			ans %= MOD;

@@ -37,11 +37,10 @@ signed main() {
 	G.insert(G.begin(), 0);
 
 	int spots = 0;
-	ll ans = 1;
+	int ans = 1;
 	for (int i = l; i >= 1; --i) {
 		++spots;
 		int hole = G[i] - G[i - 1] - 1;
-        if (hole < 0) ans = 0;
 		rep(i,0,hole) {
 			ans *= (spots++);
 			ans %= MOD;
