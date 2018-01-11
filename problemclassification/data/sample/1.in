@@ -5,6 +5,6 @@ graph 3 query vertex hamiltonian
 math 3 hamiltonian sum euclid
 consider the hamiltonian graph where each vertex corresponds
 to an linear equation we can solve these using the euclid
-algorithm now you will recieve a query corresponding to a
+algorithm now you will receive a query corresponding to a
 range of vertices your task is to compute the sum of the
 minimum solution of those vertices
