@@ -5,6 +5,9 @@ If, for example, the word ``vertex'' or ``edge'' appears, the problem is almost 
 Your task is to implement a simple program that attempts to classify a problem according to one of $N$ categories.
 Each category has an associated set of words, which, if they appear as words in a statement, suggest the problem belongs to this category.
 When classifying a statement, the program should suggest those categories which have the highest number of occurences of their associated words.
+Note that words that are part of other words do not count.
+For example, the word \texttt{statement} should not count as an occurance for the word \texttt{ate}.
+
 In the above example, we suggested that the category \texttt{graph} may have the associated words \texttt{vertex} and \texttt{edge} and the category \texttt{string} could have the associated words \texttt{words} and \texttt{letters}.
 Then, if there were $3$ occurances each of the words \texttt{vertex} and \texttt{edge}, the number of matches for the category \texttt{graph} would be $6$.
 If the statement contained $14$ occurances of \texttt{words} and $4$ of \texttt{letters}, the number of matches for the category \texttt{string} would be $18$.
