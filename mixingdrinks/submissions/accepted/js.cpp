@@ -9,6 +9,8 @@ typedef long long ll;
 typedef pair<int, int> pii;
 typedef vector<int> vi;
 
+const ll mod = 1000000007;
+
 int main() {
 	cin.sync_with_stdio(0); cin.tie(0);
 	cin.exceptions(cin.failbit);
@@ -31,9 +33,12 @@ int main() {
             tans -= ans[lo];
             ++lo;
         }
-        ans[i] = tans;
+		tans %= mod;
+        ans[i] = (int)tans;
         tans += ans[i];
-        cout << ans[i] << endl;
+        // cout << ans[i] << endl;
     }
-    cout << ans.back() << endl;
+	ll res = ans.back() % mod;
+	if (res < 0) res += mod;
+    cout << res << endl;
 }
