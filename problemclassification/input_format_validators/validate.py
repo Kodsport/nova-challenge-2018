@@ -16,6 +16,7 @@ for i in range(N):
     assert int(w[1]) == len(w) - 2
     assert w[0] not in cats
     cats.append(w[0])
+    assert len(set(w[2:])) == len(w) - 2
 
 wc = 0
 while True:
