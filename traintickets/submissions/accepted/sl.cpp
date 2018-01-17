@@ -50,9 +50,10 @@ struct Node {
 	}
 	void query(int from, int to, int out[12][12]) {
 		assert(contains(from, to));
-		if (!L) {
+		if (from <= lo && hi <= to) {
 			memcpy(out, res, sizeof(res));
 		} else {
+			assert(L);
 			if (L->contains(from, to) && R->contains(from, to)) {
 				int tempa[12][12], tempb[12][12];
 				L->query(from, to, tempa);
