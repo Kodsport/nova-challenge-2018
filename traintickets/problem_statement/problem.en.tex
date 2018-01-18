@@ -8,12 +8,12 @@ More precisely he wants to determine, given an interval of years $a, a + 1, \dot
 Can you write a program to determine this?
 
 \section*{Input}
-The first line of input contains the integer $1 \le N \le 10\,000$, the number of years Katriel has pricing data for.
+The first line of input contains the integer $1 \le N \le 20\,000$, the number of years Katriel has pricing data for.
 The next $N$ lines contain the pricing data for years $1, 2, \dots, N$, in order.
 The pricing data for a given year is given as $12$ integers: the prices of the tickets valid for $1, 2, \dots, 12$ months, respectively.
 All prices are between $0$ and $10\,000$.
 
-The next line contains the integer $1 \le Q \le 1000$, the number of intervals of years Katriel wishes to compute the price for.
+The next line contains the integer $1 \le Q \le 2000$, the number of intervals of years Katriel wishes to compute the price for.
 The next $Q$ lines contains each of these intervals, given as two integers $1 \le a \le b \le N$ representing the interval $a, a + 1, \dots, b$.
 
 In a given year, a ticket valid for a longer period of time is never cheaper than a ticket valid for a shorter period of time.
