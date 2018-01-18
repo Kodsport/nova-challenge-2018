@@ -21,60 +21,122 @@ template<class S> static inline void in(S& s) { cin >> s; }
 template<class S> static inline void ut(const S& s) { cout << s << " "; }
 static inline void nl() { cout << endl; }
 
-vi simplify(const vi& year) {
-    vi res(13);
-    rep(i,1,13) {
-        int best = year[i];
-        rep(j,1,i) {
-            best = min(best, year[j] + res[i - j]);
-        }
-        res[i] = best;
-    }
-    return res;
-}
-
-vector<vi> combine(const vector<vi>& a, const vector<vi>& b) {
-    vector<vi> res(13, vi(13));
-    rep(i,1,13) rep(j,1,13) rep(k,1,13) {
-        res[i][j] = min(res[i][j], a[i][k] + b[k][j]);
-    }
-    return res;
-}
-
-vector<vi> toTransition(const vi& a, const vi& b) {
-    vector<vi> res(13, vi(13));
-    rep(i,1,13) rep(j,1,13) {
-        int tt = 13 - i + j;
-        int t = min(12, tt);
-        rep(k,13 - i,t + 1) {
-            res[i][j] = min(res[i][j], a[k] + b[tt - k]);
+vi simplify(const vi& prices) {
+    vi combined(13);
+    for (int months = 1; months <= 12; ++months) {
+        combined[months] = prices[months];
+        for (int previous = 1; previous < months; previous++) {
+            combined[months] = min(combined[months], combined[months - previous] + prices[previous]);
         }
     }
-    return res;
+    return combined;
 }
+
+struct YearPrice {
+
+    vi monthPrices;
+    vi combinedPrices;
+
+    YearPrice(const vi& monthPrices) : monthPrices(monthPrices) {
+        combinedPrices = simplify(monthPrices);
+    }
+
+    int yearCost() const {
+        return combinedPrices[12];
+    }
+
+    // The cost of paying for month [startMonth, 12] in year one
+    // and [1, secondMonth) in year two.
+    int costIntoNextYear(int startMonth, int secondMonth, const YearPrice& nextYear) const {
+        int ans = 1e9;
+        int firstYearMonths = 12 - startMonth + 1;
+        for (int combinedFirstYear = 0; combinedFirstYear <= firstYearMonths; ++combinedFirstYear) {
+            int remainingFirstYear = firstYearMonths - combinedFirstYear;
+            int remainingSecondYear = secondMonth - 1;
+
+            int remaining = remainingFirstYear + remainingSecondYear;
+            if (remainingFirstYear) {
+                for (int fixedTicket = remainingFirstYear; fixedTicket <= min(remaining, 12); ++fixedTicket) {
+                    
+                    int leftSecondYear = remaining - fixedTicket;
+
+                    int price = combinedPrices[combinedFirstYear] + monthPrices[fixedTicket] + nextYear.combinedPrices[leftSecondYear];
+                    ans = min(price, ans);
+                }
+            } else {
+                int price = combinedPrices[combinedFirstYear] + nextYear.combinedPrices[remainingSecondYear];
+                ans = min(price, ans);
+            }
+        }
+        return ans;
+    }
+
+};
+
+struct Transition {
+
+    array<array<int, 14>, 14> cache;
+
+    Transition() {}
+
+    Transition(const YearPrice& a, const YearPrice& b) {
+        rep(i,0,14) rep(j,0,14) cache[i][j] = 1e9;
+        for (int firstMonth = 1; firstMonth <= 12; ++firstMonth) {
+            for (int secondMonth = 1; secondMonth <= 13; ++secondMonth) {
+                cache[firstMonth][secondMonth] = a.costIntoNextYear(firstMonth, secondMonth, b);
+            }
+        }
+    }
+
+    Transition(const Transition& a, const Transition& b) {
+        rep(i,0,14) rep(j,0,14) cache[i][j] = 1e9;
+        for (int firstMonth = 1; firstMonth <= 12; ++firstMonth) {
+            for (int secondMonth = 1; secondMonth <= 13; ++secondMonth) {
+                int ans = 1e9;
+                for (int mid = 1; mid <= 12; ++mid) {
+                    int price = a.cost(firstMonth, mid) + b.cost(mid, secondMonth);
+                    ans = min(ans, price);
+                }
+                cache[firstMonth][secondMonth] = min(
+                        cache[firstMonth][secondMonth], ans);
+            }
+        }
+    }
+
+    // Represents the cost of purchasing tickets from
+    // [firstMonth in the first year, secondMonth in the second year)
+    int cost(int firstMonth, int secondMonth) const {
+        return cache[firstMonth][secondMonth];
+    }
+
+    int yearCost() {
+        return cost(1, 13);
+    }
+
+};
 
 struct Tree {
-    vector<vi> val;
+    Transition val;
     int L, R;
     Tree *left, *right;
 
-    Tree(const vector<vector<vi>>& transitions) : Tree(transitions, 0, sz(transitions)) {
-    }
+    Tree(const vector<Transition>& transitions) : Tree(transitions, 0, sz(transitions)) {}
 
-    Tree(const vector<vector<vi>>& transitions, int lo, int hi) {
+    Tree(const vector<Transition>& transitions, int lo, int hi) {
         L = lo;
         R = hi;
         if (R - L > 1) {
             int M = (L + R) / 2;
             left = new Tree(transitions, lo, M);
             right = new Tree(transitions, M, hi);
-            val = combine(left->val, right->val);
+            val = Transition(left->val, right->val);
         } else {
             val = transitions[lo];
         }
     }
 
-    vector<vi> query(int lo, int hi) {
+    Transition query(int lo, int hi) {
+        //cout << "searching for [" << lo << ", " << hi << ") " << "in [" << L << ", " << R << ")" << endl;
         if (lo == L && hi == R) return val;
         int M = (L + R) / 2;
         if (hi <= M) {
@@ -83,7 +145,7 @@ struct Tree {
         if (lo >= M) {
             return right->query(lo, hi);
         }
-        return combine(query(lo, M), query(M, hi));
+        return Transition(query(lo, M), query(M, hi));
     }
 };
 
@@ -93,14 +155,16 @@ signed main() {
 	
     int N;
     cin >> N;
-    vector<vi> prices(N);
+    vector<YearPrice> prices;
     rep(i,0,N) {
         vi p(13);
         rep(j,1,13) cin >> p[j];
-        prices[i] = simplify(p);
+        prices.emplace_back(p);
     }
-    vector<vector<vi>> transitions(N - 1);
-    rep(i,0,N - 1) transitions[i] = toTransition(prices[i], prices[i + 1]);
+    vector<Transition> transitions;
+    rep(i,0,N - 1) {
+        transitions.emplace_back(prices[i], prices[i + 1]);
+    }
     Tree T(transitions);
 
     int Q;
@@ -108,8 +172,10 @@ signed main() {
     rep(i,0,Q) {
         int a, b;
         cin >> a >> b;
-        --a; --b;
-        if (a == b) cout << prices[a][12] << endl;
-        cout << T.query(a, b)[1][12] << endl;
+        --a;
+        --b;
+        if (a == b) cout << prices[a].yearCost() << endl;
+        else cout << T.query(a, b).yearCost() << endl;
     }
+    exit(0);
 }

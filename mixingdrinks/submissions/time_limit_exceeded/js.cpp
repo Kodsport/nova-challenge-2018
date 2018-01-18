@@ -26,10 +26,14 @@ int main() {
     }
     vector<int> ans(N + 1);
     ans[0] = 1;
+    int op = 0;
     rep(i,1,N + 1) {
+        allowed[i] = max(allowed[i], allowed[i - 1]);
         ll tans = 0;
-        rep(j,allowed[i],i) tans += ans[j];
-		tans %= mod;
+        rep(j,allowed[i],i) {
+            tans += ans[j];
+            tans %= mod;
+        }
         ans[i] = (int)tans;
     }
 	ll res = ans.back() % mod;

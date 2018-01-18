@@ -21,7 +21,7 @@ template<class S> static inline void in(S& s) { cin >> s; }
 template<class S> static inline void ut(const S& s) { cout << s << " "; }
 static inline void nl() { cout << endl; }
 
-const int MOD = 1000000009;
+const int MOD = 1000000007;
 
 signed main() {
 	cin.sync_with_stdio(0);
