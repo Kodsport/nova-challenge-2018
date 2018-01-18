@@ -57,7 +57,7 @@ int main() {
 		int x = pa.first, ind = pa.second;
 		int a2 = (int)(upper_bound(all(ai[k]), pii(x + K, INT_MAX)) - ai[k].begin());
 		if (a2 != N) gr[ind].push_back(a2 + N*(k+1));
-		gr[i + 2*(k+1)].push_back(ind);
+		gr[i + N*(k+1)].push_back(ind);
 	}
 
 	int res = 0;
