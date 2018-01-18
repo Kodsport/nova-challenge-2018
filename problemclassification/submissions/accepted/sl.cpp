@@ -11,7 +11,6 @@ typedef vector<int> vi;
 
 int main() {
 	cin.sync_with_stdio(false);
-	cin.exceptions(cin.failbit);
 	int N;
 	cin >> N;
 	map<string, int> cats;
