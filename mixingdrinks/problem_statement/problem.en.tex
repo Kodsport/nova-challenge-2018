@@ -1,6 +1,6 @@
 \problemname{Mixing Drinks}
 Pia is a famous bartender at the hip Stockholm night club Supernova.
-One of her most impressive feats is the mixing a series of drinks using every of the $N$ distinct drink ingredients in the bar exactly once.
+One of her most impressive feats is the mixing a series of drinks using each of the $N$ distinct drink ingredients in the bar exactly once.
 She does this in the following way.
 
 First, Pia chooses a number of drinks to make.
@@ -11,7 +11,7 @@ She continues this process until the final drink, which uses some set of ingredi
 
 However, not every pair of ingredients work well in a drink.
 For example, milk and water would not go very well together.
-She may not include such a bad pair of ingredients in any drink.
+She may not include a bad pair of ingredients in any drink.
 
 So far, she has managed to make a different set of drinks every night.
 For how many nights can she mix a new set of drinks?
@@ -20,7 +20,7 @@ We call two sets of drinks different if they do not consist of the exact same dr
 \section*{Input}
 The first line of the input contains two integers $1 \le N \le 100\,000$ and $0 \le P \le 100\,000$, the number of ingredients and bad pairs of ingredients.
 
-The next $P$ lines each contains two integers $1 \le a \not= b \le N$, two ingredients that do not work well together in a drink.
+Each of the next $P$ lines contains two integers $1 \le a \not= b \le N$, two ingredients that do not work well together in a drink.
 The same pair of ingredients may appear multiple times in this list.
 
 \section*{Output}
